@@ -114,8 +114,12 @@ describe "Clubes"{
     }
 
     test "Predios tranquis"{
-        assert.that(clubBarrial.prediosTranquis(calamardo60).isEmpty())
-        assert.equals(#{recreo}, clubBarrial.prediosTranquis(bob))
-        
+        assert.equals(#{recreo}, clubBarrial.prediosTranquis(calamardo60))
+        assert.that(clubBarrial.prediosTranquis(bob).isEmpty())
+    }
+
+    test "Rutinas más exigentes"{
+        assert.equals(#{maratonDeBA, remoEnElCaminoDeLosRemeros}, clubBarrial.rutinasMasExigentes(bob))
+        assert.equals(#{maratonDeBA, remoEnElDelta}, clubBarrial.rutinasMasExigentes(calamardo60))
     }
 }
