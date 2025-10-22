@@ -16,6 +16,10 @@ class Persona{
     method peso(){
         return peso
     }
+
+    method tiempo(){
+        return tiempo
+    }
 }
 
 class PersonaSedentaria inherits Persona (kilosPorCaloria = 7000){
