@@ -1,0 +1,125 @@
+import personas.*
+import rutinas.*
+import clubes.*
+
+const correrEnLaPlaya = new Running(intensidad = 1.2)
+const maratonDeBA = new Maraton(intensidad = 1.5)
+const remoEnElDelta = new Remo()
+const remoEnElCaminoDeLosRemeros = new RemoDeCompeticion()
+
+describe "Rutinas"{
+
+    test "Correr en la playa"{
+        assert.equals(360, correrEnLaPlaya.caloriasQuemadas(5))
+        assert.equals(10200, correrEnLaPlaya.caloriasQuemadas(90))
+    }
+
+    test "Maraton de BA"{
+        assert.equals(900, maratonDeBA.caloriasQuemadas(5))
+        assert.equals(25500, maratonDeBA.caloriasQuemadas(90))
+    }
+
+    test "Remo en el delta"{
+        assert.equals(520, remoEnElDelta.caloriasQuemadas(5))
+        assert.equals(9360, remoEnElDelta.caloriasQuemadas(90))
+    }
+
+    test "Remo en el camino de los remeros"{
+        assert.equals(510, remoEnElCaminoDeLosRemeros.caloriasQuemadas(5))
+        assert.equals(12750, remoEnElCaminoDeLosRemeros.caloriasQuemadas(90))
+    }
+}
+
+const calamardo60 = new PersonaSedentaria(peso = 60, tiempo = 5)
+const calamardo40 = new PersonaSedentaria(peso = 40, tiempo = 5)
+const bob = new PersonaAtleta(peso = 40)
+
+describe "Personas"{
+    test "Calamardo peso 60: correr en la playa"{
+        calamardo60.hacerRutina(correrEnLaPlaya)
+        assert.equals(59.948, calamardo60.peso().truncate(3))
+    }
+
+    test "Calamardo peso 60: correr maraton de BA"{
+        calamardo60.hacerRutina(maratonDeBA)
+        assert.equals(59.871, calamardo60.peso().truncate(3))
+    }
+
+    test "Calamardo peso 60: remo en el delta"{
+        calamardo60.hacerRutina(remoEnElDelta)
+        assert.equals(59.925, calamardo60.peso().truncate(3))
+    }
+
+    test "Calamardo peso 60: remo en el camino de los remeros"{
+        calamardo60.hacerRutina(remoEnElCaminoDeLosRemeros)
+        assert.equals(59.927, calamardo60.peso().truncate(3))
+    }
+
+    test "Calamardo peso 40: correr en la playa"{
+        calamardo40.hacerRutina(correrEnLaPlaya)
+        assert.equals(40, calamardo40.peso().truncate(3))
+    }
+
+    test "Calamardo peso 40: correr maraton de BA"{
+        calamardo40.hacerRutina(maratonDeBA)
+        assert.equals(40, calamardo40.peso().truncate(3))
+    }
+
+    test "Calamardo peso 40: remo en el delta"{
+        calamardo40.hacerRutina(remoEnElDelta)
+        assert.equals(40, calamardo40.peso().truncate(3))
+    }
+
+    test "Calamardo peso 40: remo en el camino de los remeros"{
+        calamardo40.hacerRutina(remoEnElCaminoDeLosRemeros)
+        assert.equals(40, calamardo40.peso().truncate(3))
+    }
+
+    test "Bob: correr en la playa"{
+        bob.hacerRutina(correrEnLaPlaya)
+        assert.equals(39.725, bob.peso().truncate(3))
+    }
+
+    test "Bob: correr maraton de BA"{
+        bob.hacerRutina(maratonDeBA)
+        assert.equals(37.812, bob.peso().truncate(3))
+    }
+
+    test "Bob: remo en el delta"{
+        bob.hacerRutina(remoEnElDelta)
+        assert.equals(40, bob.peso().truncate(3))
+    }
+
+    test "Bob: remo en el camino de los remeros"{
+        bob.hacerRutina(remoEnElCaminoDeLosRemeros)
+        assert.equals(39.406, bob.peso().truncate(3))
+    }
+}
+
+const clubBarrial = new Club()
+
+describe "Clubes"{
+    method initialize(){
+        recreo.agregarRutina(correrEnLaPlaya)
+        recreo.agregarRutina(maratonDeBA)
+        nautico.agregarRutina(remoEnElDelta)
+        nautico.agregarRutina(remoEnElCaminoDeLosRemeros)
+        clubBarrial.agregarPredio(nautico)
+        clubBarrial.agregarPredio(recreo)
+    }
+
+    test "Mejor Predio"{
+        assert.equals(recreo, clubBarrial.mejorPredio(bob))
+        assert.equals(recreo, clubBarrial.mejorPredio(calamardo60))
+    }
+
+    test "Predios tranquis"{
+        assert.equals(#{recreo}, clubBarrial.prediosTranquis(calamardo60))
+        assert.that(clubBarrial.prediosTranquis(bob).isEmpty())
+    }
+
+    test "Rutinas más exigentes"{
+        assert.equals(#{maratonDeBA, remoEnElCaminoDeLosRemeros}, clubBarrial.rutinasMasExigentes(bob))
+        assert.equals(#{maratonDeBA, remoEnElDelta}, clubBarrial.rutinasMasExigentes(calamardo60))
+    }
+}
