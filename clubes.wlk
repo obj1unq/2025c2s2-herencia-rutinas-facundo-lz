@@ -9,16 +9,12 @@ class Club{
     }
 
     method prediosTranquis(persona){
-        return predios.filter({predio => self.alMenosUnaGastaMenosDe(predio.rutinas(), 500, persona)})
-    }
-
-    method alMenosUnaGastaMenosDe (rutinas, cantidad, persona){
-        return rutinas.any({rutina => persona.caloriasQueGastaria(rutina) < cantidad})
+        return predios.filter({predio => predio.alMenosUnaGastaMenosDe(500, persona)})
     }
 
     method rutinasMasExigentes(persona){
         const rutinas = #{}
-        return predios.forEach({predio => rutinas.add(predio.rutinas().maxIfEmpty({rutina => persona.caloriasQueGastaria(rutina)}))})
+        return predios.forEach({predio => rutinas.add(predio.rutinaQueMasGasta(persona))})
     }
 
     method rutinasDePredios(){
@@ -42,6 +38,14 @@ object nautico{
     method rutinas(){
         return rutinas
     }
+
+    method alMenosUnaGastaMenosDe (cantidad, persona){
+        return rutinas.any({rutina => rutina.caloriasQuemadas(persona.tiempo()) < cantidad})
+    }
+
+    method rutinaQueMasGasta(persona){
+        return rutinas.max({rutina => persona.caloriasQueGastaria(rutina)})
+    }
 }
 
 object recreo{
@@ -53,5 +57,9 @@ object recreo{
 
     method rutinas(){
         return rutinas
+    }
+
+    method alMenosUnaGastaMenosDe (cantidad, persona){
+        return rutinas.any({rutina => rutina.caloriasQuemadas(persona.tiempo()) < cantidad})
     }
 }
